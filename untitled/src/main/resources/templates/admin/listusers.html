@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Felhasználók</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+      margin: 0;
+      padding: 40px;
+    }
+
+ .navigation-container {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+    }
+
+    .navigation-container img {
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .navigation-container img:hover {
+      transform: scale(1.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      font-size: 36px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .add-button {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      background-color: #3498db;
+      color: white;
+      text-decoration: none;
+      font-size: 26px;
+      padding: 8px 16px;
+      border-radius: 50%;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: background-color 0.3s ease;
+    }
+
+    .add-button:hover {
+      background-color: #2980b9;
+    }
+
+    .sort-container {
+      text-align: right;
+      margin-bottom: 20px;
+    }
+
+    select {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      background-color: #ffffff;
+      cursor: pointer;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #fff;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      overflow: auto;
+    }
+
+    thead {
+      background-color: #6c5ce7;
+      color: white;
+    }
+
+    th, td {
+      padding: 18px 22px;
+      text-align: left;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f1f2f6;
+    }
+
+    tr:hover {
+      background-color: #dff9fb;
+      transition: background-color 0.3s ease;
+    }
+
+    th {
+      text-transform: uppercase;
+      font-size: 14px;
+      letter-spacing: 0.05em;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 0 4px rgba(0,0,0,0.2);
+      margin-right: 10px;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+    }
+
+    .badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    .badge-admin {
+      background-color: #e17055;
+      color: white;
+    }
+
+    .badge-user {
+      background-color: #0984e3;
+      color: white;
+    }
+
+    .name-link {
+      color: #2c3e50;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      transition: color 0.2s ease;
+    }
+
+    .name-link:hover {
+      color: #6c5ce7;
+      text-decoration: underline;
+    }
+
+    .delete-icon {
+      font-size: 20px;
+      text-decoration: none;
+      color: #e74c3c;
+      display: inline-block;
+      text-align: center;
+      transition: transform 0.2s ease;
+    }
+
+    .delete-icon:hover {
+      transform: scale(1.2);
+      color: #c0392b;
+    }
+
+    @media (max-width: 768px) {
+      .sort-container {
+        text-align: left;
+        margin-bottom: 10px;
+      }
+
+      table, thead, tbody, th, td, tr {
+        display: block;
+        width: 100%;
+      }
+
+      thead {
+        display: none;
+      }
+      h1 {
+        display: none;
+      }
+
+      tr {
+        background: white;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        border-radius: 10px;
+        padding: 12px;
+      }
+
+      td {
+        text-align: left;
+        padding: 8px 12px 8px 50%;
+        position: relative;
+        font-size: 14px;
+        border-bottom: 1px solid #eee;
+      }
+
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 12px;
+        top: 50%;
+<!--        transform: translateY(-50%);-->
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 12px;
+        color: #7f8c8d;
+      }
+
+      .user-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+      }
+
+      .avatar {
+        margin: 0 0 8px;
+      }
+
+      .delete-icon {
+        font-size: 18px;
+      }
+
+      .badge {
+        margin-top: 5px;
+      }
+      .navigation-container img {
+      width: 20px;
+      height: 20px;
+    }
+    .add-button {
+      font-size: 13px;
+      padding: 4px 8px;
+      right: 12px;
+    }
+    }
+  </style>
+</head>
+<body>
+<nav class="navigation-container">
+  <a th:href="@{/my-profile}"><img src="/images/profile-icon.png" alt="Profil ikon"></a>
+  <a th:href="@{/todo}"><img src="/images/list-icon.png" alt="Lista ikon"></a>
+  <form th:action="@{/logout}" method="post">
+    <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer;">
+      <img src="/images/logout-icon.png" alt="Kijelentkezés">
+    </button>
+  </form>
+
+</nav>
+<h1>Felhasználók</h1>
+<a th:href="@{/admin/add}" class="add-button">+</a>
+
+<div class="sort-container">
+  <label for="sortSelect">Rendezés: </label>
+  <select id="sortSelect" onchange="sortByName()">
+    <option value="asc">Név szerint (A → Z)</option>
+    <option value="desc">Név szerint (Z → A)</option>
+  </select>
+</div>
+
+<table id="userTable">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Név</th>
+    <th>Email</th>
+    <th>Felhasználónév</th>
+    <th>Szerepkör</th>
+    <th>Törlés</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="user : ${users}">
+    <td data-label="ID" th:text="${user.id}">1</td>
+    <td data-label="Név">
+      <div class="user-info">
+        <img class="avatar" th:src="@{'https://i.pravatar.cc/150?img=' + ${user.id}}" alt="profilkép">
+        <a class="name-link" th:href="@{'/users/details/' + ${user.id}}" th:text="${user.name}">Név</a>
+      </div>
+    </td>
+    <td data-label="Email" th:text="${user.email}">email@example.com</td>
+    <td data-label="Felhasználónév" th:text="${user.username}">username</td>
+    <td data-label="Szerepkör">
+      <span th:classappend="${user.role.name() == 'ADMIN'} ? 'badge badge-admin' : 'badge badge-user'"
+            th:text="${user.role}">USER</span>
+    </td>
+    <td data-label="Törlés">
+      <a th:href="@{'/admin/delete/' + ${user.id}}" class="delete-icon" onclick="return confirm('Biztos törölni szeretnéd?');" title="Törlés">&#10060;</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<script>
+  function sortByName() {
+    const table = document.getElementById("userTable");
+    const tbody = table.tBodies[0];
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+    const order = document.getElementById("sortSelect").value;
+
+    rows.sort((a, b) => {
+      const nameA = a.querySelector(".user-info a").textContent.trim().toLowerCase();
+      const nameB = b.querySelector(".user-info a").textContent.trim().toLowerCase();
+      return order === "asc" ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
+    });
+
+    rows.forEach(row => tbody.appendChild(row));
+  }
+</script>
+
+</body>
+</html>

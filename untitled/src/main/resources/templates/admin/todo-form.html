@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Új teendő létrehozása</title>
+  <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f9f9f9;
+            padding: 2rem;
+        }
+
+        form {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-top: 1rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button, .link-button {
+            margin-top: 1.5rem;
+            padding: 0.75rem 2rem;
+            background-color: #6c5ce7;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+        }
+         .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .error {
+            color: red;
+            margin-top: 1rem;
+        }
+
+        .tag-container {
+            display: block;
+            width: 15%;
+            margin-bottom: 1rem;
+}
+    @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            form {
+                padding: 1rem;
+            }
+
+            h2 {
+                font-size: 18px;
+                margin-bottom: 0.5rem;
+            }
+
+            label {
+                font-size: 12px;
+                margin-top: 0.5rem;
+            }
+
+            input, textarea {
+                padding: 0.25rem;
+                font-size: 12px;
+            }
+
+            button, .link-button {
+                padding: 0.5rem 1rem;
+                font-size: 12px;
+                border-radius: 4px;
+            }
+
+            .error {
+                font-size: 12px;
+            }
+        }
+  </style>
+    </style>
+</head>
+<body>
+
+<form th:action="@{/todo/create}" th:object="${todoDto}" method="post">
+  <h2>Új teendő létrehozása</h2>
+
+  <label for="title">Cím</label>
+  <input type="text" id="title" th:field="*{title}" required />
+
+  <label for="description">Leírás</label>
+  <textarea id="description" th:field="*{description}"></textarea>
+
+  <label for="dueDate">Határidő</label>
+  <input type="datetime-local" id="dueDate" th:field="*{dueDate}" required />
+
+  <label for="assigneeName">Felelős felhasználó neve</label>
+  <input type="text" id="assigneeName" th:field="*{assigneeName}" required />
+
+  <label for="tag">Feladat típusa, besorolása</label>
+  <select class="tag-container" id="tag" th:field="*{tag}">
+    <option th:each="tag : ${T(com.nye.todo.todoapp.entities.Tag).values()}"
+            th:value="${tag}"
+            th:text="${tag.label}"
+            th:selected="${todoDto.tag == tag}">
+    </option>
+  </select>
+<div class="button-group">
+  <button type="submit">Létrehozás</button>
+  <a th:href="@{/todo}" class="link-button">Mégse</a>
+
+</div>
+
+  <div th:if="${error}" class="error" th:text="${error}"></div>
+</form>
+
+</body>
+</html>

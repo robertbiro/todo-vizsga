@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Feladatok</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f6fa;
+      margin: 0;
+      padding: 40px;
+    }
+
+    .navigation-container {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+    }
+
+    .navigation-container img {
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .navigation-container img:hover {
+      transform: scale(1.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2d3436;
+      margin-bottom: 30px;
+    }
+
+    .add-btn {
+      position: absolute;
+      top: 30px;
+      right: 40px;
+      background-color: #6c5ce7;
+      color: white;
+      text-decoration: none;
+      font-size: 24px;
+      padding: 10px 18px;
+      border-radius: 50%;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: background-color 0.3s ease;
+    }
+
+    .add-btn:hover {
+      background-color: #5b4cd3;
+    }
+
+    .board {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .card {
+      position: relative;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      padding: 20px;
+      width: 280px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+
+
+    .border-urgent {
+      border: 2px solid #e74c3c;
+    }
+
+    .border-sprint {
+      border: 2px solid #f1c40f;
+    }
+
+    .border-normal {
+      border: 2px solid #2ecc71;
+    }
+
+    .back-btn {
+      background-color: #0984e3;
+      border: none;
+      color: white;
+      padding: 12px 24px;
+      text-align: center;
+      text-decoration: none;
+      font-size: 16px;
+      border-radius: 16px;
+      margin-top: 30px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .back-btn:hover {
+      background-color: #2d3436;
+    }
+
+    .delete-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      text-align: center;
+      font-weight: bold;
+      text-decoration: none;
+      line-height: 28px;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    .delete-btn:hover {
+      background-color: #c0392b;
+    }
+
+    .edit-btn {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: #0984e3;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      text-align: center;
+      font-weight: bold;
+      text-decoration: none;
+      line-height: 28px;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    .edit-btn:hover {
+      background-color: #0652dd;
+    }
+
+    .card h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #0984e3;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: #636e72;
+      margin-bottom: 8px;
+    }
+
+    .meta {
+      font-size: 13px;
+      color: #b2bec3;
+      margin-top: 10px;
+    }
+
+    .status {
+      margin-top: 10px;
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      text-align: center;
+      width: fit-content;
+    }
+
+    .done {
+      background-color: #00b894;
+      color: white;
+    }
+
+    .pending {
+      background-color: #d63031;
+      color: white;
+    }
+
+    @media (max-width: 768px) {
+      .board {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .card {
+        width: 90%;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .add-btn {
+        top: 20px;
+        right: 20px;
+        font-size: 20px;
+        padding: 8px 14px;
+      }
+
+      .card h2 {
+        font-size: 18px;
+      }
+
+      .card p, .meta {
+        font-size: 13px;
+      }
+
+      .status {
+        font-size: 11px;
+        padding: 5px 8px;
+      }
+
+      .delete-btn {
+        width: 24px;
+        height: 24px;
+        font-size: 14px;
+        line-height: 24px;
+      }
+
+      .navigation-container img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+<nav class="navigation-container">
+  <a th:href="@{/my-profile}"><img src="/images/profile-icon.png" alt="Profil ikon"></a>
+  <form th:action="@{/logout}" method="post">
+    <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer;">
+      <img src="/images/logout-icon.png" alt="Kijelentkezés" width="40" height="40">
+    </button>
+  </form>
+
+</nav>
+<h1>Feladatkártyák</h1>
+<a class="add-btn" th:href="@{/todo/create}">+</a>
+
+<div class="board">
+  <div class="card"
+       th:classappend="${todo.tag.name() == 'SURGOS'} ? ' border-urgent' : (${todo.tag.name() == 'SPRINT'} ? ' border-sprint' : ' border-normal')"
+
+       th:each="todo : ${todos}">
+    <a th:href="@{'/todo/delete/' + ${todo.id}}" onclick="return confirm('Biztos törölni szeretnéd?');" class="delete-btn">&times;</a>
+    <a th:href="@{'/todo/edit/' + ${todo.id}}" class="edit-btn" title="Szerkesztés">&#9998;</a>
+
+    <h2 th:text="${todo.title}">Cím</h2>
+    <p th:text="${todo.description}">Leírás</p>
+    <p class="meta">Létrehozva: <span th:text="${#temporals.format(todo.createdAt, 'yyyy-MM-dd HH:mm')}">2025-06-08</span></p>
+    <p class="meta">Határidő: <span th:text="${#temporals.format(todo.dueDate, 'yyyy-MM-dd')}">2025-06-10</span></p>
+    <p class="meta">Felelős: <span th:text="${todo.assignee?.name}">Assignee</span></p>
+    <div th:classappend="${todo.status != null and todo.status.name() == 'DONE'} ? 'status done' : 'status pending'"
+         th:text="${todo.status != null} ? ${todo.status.label} : 'Nincs állapot'">Állapot</div>
+
+    <p class="meta" th:if="${todo.status != null and todo.status.name() == 'DONE'}">
+      Befejezve:
+      <span th:text="${#temporals.format(todo.completedAt, 'yyyy-MM-dd HH:mm')}">2025-06-09 17:00</span>
+    </p>
+
+  </div>
+</div>
+
+</body>
+</html>

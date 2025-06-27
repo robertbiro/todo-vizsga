@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Regisztráció</title>
+    <style>
+        body {
+          font-family: 'Segoe UI', sans-serif;
+          background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+          margin: 0;
+          padding: 20px;
+        }
+
+        .form-card {
+          background: white;
+          padding: 40px;
+          border-radius: 12px;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+          max-width: 500px;
+          width: 100%;
+        }
+
+        h2 {
+          text-align: center;
+          color: #2c3e50;
+          margin-bottom: 30px;
+        }
+
+        label {
+          display: block;
+          margin: 12px 0 6px;
+          font-weight: bold;
+          color: #2c3e50;
+        }
+
+        input, select {
+          width: 100%;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          font-size: 14px;
+        }
+
+        .btn-register {
+          width: 100%;
+          margin-top: 30px;
+          padding: 12px;
+          font-size: 16px;
+          font-weight: bold;
+          background-color: #5b4cd3;
+          color: white;
+          border: none;
+          border-radius: 20px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        }
+
+        .btn-register:hover {
+          background-color: #039b63;
+        }
+
+        .form-footer {
+          text-align: center;
+          margin-top: 20px;
+          font-size: 14px;
+        }
+
+        .form-footer a {
+          color: #6c5ce7;
+          text-decoration: none;
+          font-weight: 600;
+        }
+
+        .form-footer a:hover {
+          text-decoration: underline;
+        }
+         @media (max-width: 768px) {
+          .form-card {
+            padding: 20px;
+          }
+
+          h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+          }
+
+          label {
+            font-size: 12px;
+            margin: 8px 0 4px;
+          }
+
+          input, select {
+            padding: 6px;
+            font-size: 12px;
+          }
+
+          .btn-register {
+            margin-top: 20px;
+            padding: 8px;
+            font-size: 14px;
+            border-radius: 14px;
+          }
+
+          .form-footer {
+            margin-top: 15px;
+            font-size: 12px;
+          }
+
+          .form-footer a {
+            font-size: 12px;
+          }
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-card">
+    <h2>Regisztráció</h2>
+    <form th:action="@{/register}" method="post" th:object="${applicationUser}">
+        <label for="name">Teljes név</label>
+        <input type="text" id="name" th:field="*{name}" required />
+
+        <label for="username">Felhasználónév</label>
+        <input type="text" id="username" th:field="*{username}" required />
+
+        <label for="email">Email</label>
+        <input type="email" id="email" th:field="*{email}" required />
+
+        <label for="password">Jelszó</label>
+        <input type="password" id="password" th:field="*{password}" required />
+
+        <label for="role">Szerepkör</label>
+        <select id="role" th:field="*{role}">
+            <option value="USER">USER</option>
+        </select>
+
+        <button type="submit" class="btn-register">Regisztráció</button>
+    </form>
+
+    <div class="form-footer">
+        <p>Van már fiókod? <a th:href="@{/login}">Bejelentkezés</a></p>
+    </div>
+</div>
+
+</body>
+</html>

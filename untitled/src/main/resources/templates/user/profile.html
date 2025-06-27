@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Felhasználó Részletei</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+      margin: 0;
+      padding: 60px 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .card {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: 28px;
+      margin: 10px 0;
+      color: #2c3e50;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+
+    .badge-user {
+      background-color: #3498db;
+      color: white;
+    }
+
+    .badge-admin {
+      background-color: #e67e22;
+      color: white;
+    }
+
+    .info {
+      text-align: left;
+      font-size: 16px;
+      color: #444;
+      margin-top: 20px;
+    }
+
+    .info p {
+      margin: 12px 0;
+      line-height: 1.6;
+    }
+
+    .label {
+      font-weight: bold;
+      color: #2c3e50;
+    }
+    .button {
+  background-color: #0984e3;
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  border-radius: 16px;
+  display: inline-block;
+  margin-top: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #039b63;
+}
+    @media (max-width: 768px) {
+      body {
+        padding: 30px 10px;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      .avatar {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 10px;
+      }
+
+      h2 {
+        font-size: 14px;
+        margin: 5px 0;
+      }
+
+      .badge {
+        font-size: 7px;
+        padding: 4px 8px;
+        margin-bottom: 15px;
+      }
+
+      .info {
+        font-size: 8px;
+        margin-top: 10px;
+      }
+
+      .info p {
+        margin: 6px 0;
+        line-height: 1.4;
+      }
+
+      .button {
+        display: block;
+        width: calc(100% - 20px);
+        margin: 8px auto;
+        padding: 6px 12px;
+        font-size: 8px;
+        border-radius: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <img class="avatar" th:src="@{'https://i.pravatar.cc/150?img=' + ${user.id}}" alt="Profilkép">
+
+  <h2 th:text="${user.name}">Név</h2>
+
+  <span th:classappend="${user.role.name() == 'ADMIN'} ? 'badge badge-admin' : 'badge badge-user'"
+        th:text="${user.role.name()}">USER</span>
+
+
+  <div class="info">
+    <p><span class="label">Felhasználónév:</span> <span th:text="${user.username}">username</span></p>
+    <p><span class="label">Email:</span> <span th:text="${user.email}">email@example.com</span></p>
+  </div>
+  <a class="button" th:href="@{/login}">Vissza</a>
+  <a class="button" th:href="${user.role.name() == 'ADMIN'} ? @{/admin/users} : @{/users}">Felhasználók</a>
+  <a class="button" th:href="@{/todo}">TODO lista</a>
+</div>
+
+
+</body>
+</html>

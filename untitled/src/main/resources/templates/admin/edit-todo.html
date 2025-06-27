@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Feladat módosítása</title>
+  <style>
+    body {
+        font-family: sans-serif;
+        background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+        padding: 32px;
+    }
+
+    form {
+        background: white;
+        padding: 32px;
+        border-radius: 10px;
+        max-width: 600px;
+        margin: auto;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 16px;
+        font-size: 24px;
+        color: #2c3e50;
+    }
+
+    label {
+        display: block;
+        margin-top: 16px;
+        font-size: 16px;
+    }
+
+    input, textarea, select {
+        width: 100%;
+        padding: 8px;
+        margin-top: 8px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+    }
+
+    .button, .link-button {
+      display: inline-block;
+      padding: 12px 32px;
+      background-color: #6c5ce7;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      text-decoration: none;
+      text-align: center;
+      margin-top: 24px;
+  }
+
+  .button:hover, .link-button:hover {
+      background-color: #5b4cd3;
+  }
+  .button-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+    .error {
+        color: red;
+        margin-top: 16px;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+        body {
+            padding: 16px;
+        }
+
+        form {
+            padding: 16px;
+        }
+
+        h2 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        label {
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        input, textarea, select {
+            padding: 4px;
+            font-size: 12px;
+
+        }
+        .button, .link-button {
+            padding: 6px 16px;
+            font-size: 16px;
+
+  }
+
+        .button-group {
+          flex-direction: column;
+          align-items: center;
+          gap: 0.01px;
+  }
+
+        .error {
+            font-size: 12px;
+        }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Admin form: Teljes feladatmódosítás -->
+<form th:action="@{'/todo/edit/' + ${todoID}}" th:object="${todoDto}" method="post">
+  <label for="title">Cím</label>
+  <input type="text" id="title" th:field="*{title}" required />
+
+  <label for="description">Leírás</label>
+  <textarea id="description" th:field="*{description}"></textarea>
+
+  <label for="dueDate">Határidő</label>
+  <input type="datetime-local" id="dueDate" th:field="*{dueDate}" />
+
+  <label for="assigneeName">Felelős felhasználó</label>
+  <input type="text" id="assigneeName" th:field="*{assigneeName}" required />
+
+  <label for="status">Állapot</label>
+  <select id="status" th:field="*{todoStatus}">
+    <option th:each="state : ${T(com.nye.todo.todoapp.entities.TodoStatus).values()}"
+            th:value="${state}"
+            th:text="${state.label}">
+    </option>
+  </select>
+
+  <label for="tag">Feladat típusa</label>
+  <select id="tag" th:field="*{tag}">
+    <option th:each="tag : ${T(com.nye.todo.todoapp.entities.Tag).values()}"
+            th:value="${tag}"
+            th:text="${tag.label}">
+    </option>
+  </select>
+
+
+  <div class="button-group">
+    <button type="submit" class="button">Mentés</button>
+    <a th:href="@{/todo}" class="link-button">Mégse</a>
+  </div>
+
+
+</form>
+
+</body>
+</html>

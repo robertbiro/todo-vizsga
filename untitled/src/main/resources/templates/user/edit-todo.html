@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Feladat módosítása</title>
+  <style>
+    body {
+        font-family: sans-serif;
+        background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+        padding: 32px;
+    }
+
+    form {
+        background: white;
+        padding: 32px;
+        border-radius: 10px;
+        max-width: 600px;
+        margin: auto;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 16px;
+        font-size: 24px;
+        color: #2c3e50;
+    }
+
+    label {
+        display: block;
+        margin-top: 16px;
+        font-size: 16px;
+    }
+
+    input, textarea, select {
+        width: 100%;
+        padding: 8px;
+        margin-top: 8px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+    }
+
+    button {
+        margin-top: 24px;
+        padding: 12px 32px;
+        background-color: #6c5ce7;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .error {
+        color: red;
+        margin-top: 16px;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+        body {
+            padding: 16px;
+        }
+
+        form {
+            padding: 16px;
+        }
+
+        h2 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        label {
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        input, textarea, select {
+            padding: 4px;
+            font-size: 12px;
+        }
+
+        button {
+            margin-top: 16px;
+            padding: 8px 16px;
+            font-size: 12px;
+        }
+
+        .error {
+            font-size: 12px;
+        }
+    }
+  </style>
+</head>
+<body>
+
+<!-- User form: Részleges feladatmódosítás -->
+<form th:action="@{'/todo/mark-doneByUser/' + ${todoID}}" th:object="${todoDto}" method="post">
+  <label for="status">Állapot</label>
+  <select id="status" th:field="*{todoStatus}">
+    <option th:each="state : ${T(com.nye.todo.todoapp.entities.TodoStatus).values()}"
+            th:value="${state}"
+            th:text="${state.label}">
+    </option>
+  </select>
+
+  <button type="submit">Mentés</button>
+</form>
+
+</body>
+</html>
