@@ -1,0 +1,6 @@
+
+?	java:S106"+Replace this use of System.out by a logger.(ýƒåg
+h
+java:S1128"SRemove this unused import 'com.nye.todo.todoapp.services.CustomUserDetailsService'.(¶Ìê%
+s
+java:S1128"]Remove this unused import 'org.springframework.security.core.userdetails.UserDetailsService'.(¶…¥à
